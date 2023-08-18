@@ -16,22 +16,13 @@ class Buffer
   end
 end
 
-# Alternative: instead of a class use `Result = Struct.new...`
-class Result
-  def self.ok(obj)
-    self.new(obj)
-  end
-
-  initialize(obj)
-    @obj = obj
-  end
-end
+Result = Struct.new('Result', :ok, :error, keyword_init: true)
 
 def assert(condition)
   if condition
-    Result.ok(true)
+    Result.new(ok: true)
   else
-    Result.error(true)
+    Result.new(ok: false)
   end
 end
 
@@ -57,18 +48,18 @@ assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 buffer.delete(36, 5)
 assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dog')
 
-# buffer.insert('s', 47)
-# assert(buffer.text == 'The speedy quick brown fox jumped over the dogs')
+buffer.insert('s', 47)
+assert(buffer.text == 'The speedy quick brown fox jumped over the dogs')
 
-# buffer.delete(1, 4)
-# assert(buffer.text == 'speedy quick brown fox jumped over the dogs')
+buffer.delete(1, 4)
+assert(buffer.text == 'speedy quick brown fox jumped over the dogs')
 
-# buffer.insert('A', 1)
-# buffer.insert(' ', 2)
-# assert(buffer.text == 'A speedy quick brown fox jumped over the dogs')
+buffer.insert('A', 1)
+buffer.insert(' ', 2)
+assert(buffer.text == 'A speedy quick brown fox jumped over the dogs')
 
-# buffer.delete(42, 45)
-# buffer.insert('wolf', 42)
-# assert(buffer.text == 'A speedy quick brown fox jumped over the wolf')
+buffer.delete(42, 45)
+buffer.insert('wolf', 42)
+assert(buffer.text == 'A speedy quick brown fox jumped over the wolf')
 
 puts 'All assertions passed'

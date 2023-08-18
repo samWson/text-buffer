@@ -49,17 +49,17 @@ buffer.delete(36, 5)
 assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dog')
 
 buffer.insert('s', 47)
-assert(buffer.text == 'The speedy quick brown fox jumped over the dogs')
+assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dogs')
 
 buffer.delete(1, 4)
-assert(buffer.text == 'speedy quick brown fox jumped over the dogs')
+assert_equal(buffer.text, 'speedy quick brown fox jumped over the dogs')
 
 buffer.insert('A', 1)
 buffer.insert(' ', 2)
-assert(buffer.text == 'A speedy quick brown fox jumped over the dogs')
+assert_equal(buffer.text, 'A speedy quick brown fox jumped over the dogs')
 
 buffer.delete(42, 45)
 buffer.insert('wolf', 42)
-assert(buffer.text == 'A speedy quick brown fox jumped over the wolf')
+assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
 puts 'All assertions passed'

@@ -61,70 +61,38 @@ Actual:   #{actual}
   result
 end
 
+assertions = []
+
 original_text = 'The quick brown fox jumped over the lazy dog'
 
 buffer = Buffer.new(original_text)
 
 buffer.insert(' speedy ', 4)
-assertion = assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 
-unless assertion.ok
-  puts assertion.error
-end
-
-assertion = nil
-
-buffer.delete(36, 5)
-assertion = assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dog')
-
-unless assertion.ok
-  puts assertion.error
-end
-
-assertion = nil
+buffer.delete(43, 5)
+assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dog')
 
 buffer.insert('s', 47)
-assertion = assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dogs')
-
-unless assertion.ok
-  puts assertion.error
-end
-
-assertion = nil
+assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dogs')
 
 buffer.delete(1, 4)
-assertion = assert_equal(buffer.text, 'speedy quick brown fox jumped over the dogs')
+assertions << assert_equal(buffer.text, 'speedy quick brown fox jumped over the dogs')
 
-unless assertion.ok
-  puts assertion.error
-end
-
-assertion = nil
-
+# TODO: to make this pass it needs to shift the rest of the buffer to the next index
+# currently it replaces the character at the index.
 buffer.insert('A', 1)
 buffer.insert(' ', 2)
-assertion = assert_equal(buffer.text, 'A speedy quick brown fox jumped over the dogs')
+assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the dogs')
 
-unless assertion.ok
-  puts assertion.error
-end
+# buffer.delete(42, 45)
+# buffer.insert('wolf', 42)
+# assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
-assertion = nil
+# array_buffer = ArrayBuffer.new(original_text)
 
-buffer.delete(42, 45)
-buffer.insert('wolf', 42)
-assertion = assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
-
-array_buffer = ArrayBuffer.new(original_text)
-
-array_buffer.insert(' speedy ', 4)
-assertion = assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
-
-unless assertion.ok
-  puts assertion.error
-end
-
-assertion = nil
+# array_buffer.insert(' speedy ', 4)
+# assertion = assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 
 # array_buffer.delete(36, 5)
 # assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dog')

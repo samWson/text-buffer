@@ -10,6 +10,11 @@ class Buffer
   end
 
   def insert(string, position)
+    # TODO: do a partition of the text at the index spliting into head tail
+    # then insert the string in the middle
+    # head = @text[0...position - 1]
+    # tail = @text[position..]
+    # @text = [head, string, tail].join
     @text[position - 1] = string
   end
 

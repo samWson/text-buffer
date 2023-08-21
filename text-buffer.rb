@@ -111,4 +111,10 @@ assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over th
 # array_buffer.insert('wolf', 42)
 # assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
+assertions.each do |assertion|
+  unless assertion.ok
+    puts assertion.error
+  end
+end
+
 puts 'All assertions complete'

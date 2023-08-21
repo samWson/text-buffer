@@ -47,8 +47,8 @@ def assert(condition)
   end
 end
 
-def assert_equal(expected, actual)
-  result = assert(expected == actual)
+def assert_equal(actual, expected)
+  result = assert(actual == expected)
 
   unless result.ok
     message = <<-HEREDOC

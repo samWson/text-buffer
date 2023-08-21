@@ -14,7 +14,7 @@ class Buffer
   end
 
   def delete(start, length)
-    @text[start, length] = ''
+    @text[start - 1, length] = ''
   end
 end
 

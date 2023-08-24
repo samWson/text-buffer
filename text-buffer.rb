@@ -10,12 +10,11 @@ class Buffer
   end
 
   def insert(string, position)
-    # TODO: do a partition of the text at the index spliting into head tail
-    # then insert the string in the middle
-    # head = @text[0...position - 1]
-    # tail = @text[position..]
-    # @text = [head, string, tail].join
-    @text[position - 1] = string
+    head = @text[0...position - 1]
+
+    tail = @text[(position - 1)..]
+
+    @text = [head, string, tail].join
   end
 
   def delete(start, length)
@@ -72,7 +71,7 @@ original_text = 'The quick brown fox jumped over the lazy dog'
 
 buffer = Buffer.new(original_text)
 
-buffer.insert(' speedy ', 4)
+buffer.insert(' speedy', 4)
 assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 
 buffer.delete(43, 5)
@@ -84,15 +83,13 @@ assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over 
 buffer.delete(1, 4)
 assertions << assert_equal(buffer.text, 'speedy quick brown fox jumped over the dogs')
 
-# TODO: to make this pass it needs to shift the rest of the buffer to the next index
-# currently it replaces the character at the index.
 buffer.insert('A', 1)
 buffer.insert(' ', 2)
 assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the dogs')
 
-# buffer.delete(42, 45)
-# buffer.insert('wolf', 42)
-# assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
+buffer.delete(42, 45)
+buffer.insert('wolf', 42)
+assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
 # array_buffer = ArrayBuffer.new(original_text)
 

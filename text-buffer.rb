@@ -39,7 +39,7 @@ class ArrayBuffer
   end
 
   def delete(start, length)
-
+    @text.slice!(start - 1, length)
   end
 end
 
@@ -98,22 +98,22 @@ array_buffer = ArrayBuffer.new(original_text)
 array_buffer.insert(' speedy', 4)
 assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 
-# array_buffer.delete(36, 5)
-# assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dog')
+array_buffer.delete(43, 5)
+assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dog')
 
-# array_buffer.insert('s', 47)
-# assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dogs')
+array_buffer.insert('s', 47)
+assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dogs')
 
-# array_buffer.delete(1, 4)
-# assert_equal(array_buffer.text, 'speedy quick brown fox jumped over the dogs')
+array_buffer.delete(1, 4)
+assertions << assert_equal(array_buffer.text, 'speedy quick brown fox jumped over the dogs')
 
-# array_buffer.insert('A', 1)
-# array_buffer.insert(' ', 2)
-# assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the dogs')
+array_buffer.insert('A', 1)
+array_buffer.insert(' ', 2)
+assertions << assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the dogs')
 
-# array_buffer.delete(42, 45)
-# array_buffer.insert('wolf', 42)
-# assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the wolf')
+array_buffer.delete(42, 45)
+array_buffer.insert('wolf', 42)
+assertions << assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
 assertions.each do |assertion|
   unless assertion.ok

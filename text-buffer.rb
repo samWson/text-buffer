@@ -26,14 +26,16 @@ end
 # arbitrary parts. Internally a Ruby Array object and methods are used for text
 # storage.
 class ArrayBuffer
-  attr_reader :text
-
   def initialize(text)
-    @text = []
+    @text = text.grapheme_clusters
+  end
+
+  def text
+    @text.join
   end
 
   def insert(string, position)
-
+    @text.insert(position - 1, *string.grapheme_clusters)
   end
 
   def delete(start, length)
@@ -91,10 +93,10 @@ buffer.delete(42, 45)
 buffer.insert('wolf', 42)
 assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
 
-# array_buffer = ArrayBuffer.new(original_text)
+array_buffer = ArrayBuffer.new(original_text)
 
-# array_buffer.insert(' speedy ', 4)
-# assertion = assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+array_buffer.insert(' speedy', 4)
+assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
 
 # array_buffer.delete(36, 5)
 # assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dog')

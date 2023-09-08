@@ -43,6 +43,24 @@ class ArrayBuffer
   end
 end
 
+class GapBuffer
+  def initialize(text)
+    @text = text.grapheme_clusters
+  end
+
+  def text
+    @text.join
+  end
+
+  def insert(string, position)
+
+  end
+
+  def delete(start, length)
+
+  end
+end
+
 Result = Struct.new('Result', :ok, :error, keyword_init: true)
 
 def assert(condition)
@@ -181,33 +199,63 @@ class ArrayBufferTestCase
   end
 end
 
-array_buffer = ArrayBuffer.new(original_text)
+class GapBufferTestCase
+  def initialize
+    original_text = 'The quick brown fox jumped over the lazy dog'
+    @buffer = GapBuffer.new(original_text)
+    @assertions = []
+  end
 
-array_buffer.insert(' speedy', 4)
-assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  def run
+    test1
+    test2
+    test3
+    test4
+    test5
+    test6
 
-array_buffer.delete(43, 5)
-assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dog')
+    @assertions.each do |assertion|
+      if assertion.ok
+        puts 'Pass'
+      else
+        puts assertion.error
+      end
+    end
+  end
 
-array_buffer.insert('s', 47)
-assertions << assert_equal(array_buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  def test1
+    @buffer.insert(' speedy', 4)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  end
 
-array_buffer.delete(1, 4)
-assertions << assert_equal(array_buffer.text, 'speedy quick brown fox jumped over the dogs')
+  def test2
+    @buffer.delete(43, 5)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  end
 
-array_buffer.insert('A', 1)
-array_buffer.insert(' ', 2)
-assertions << assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the dogs')
+  def test3
+    @buffer.insert('s', 47)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  end
 
-array_buffer.delete(42, 45)
-array_buffer.insert('wolf', 42)
-assertions << assert_equal(array_buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  def test4
+    @buffer.delete(1, 4)
+    @assertions << assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  end
 
-assertions.each do |assertion|
-  unless assertion.ok
-    puts assertion.error
+  def test5
+    @buffer.insert('A', 1)
+    @buffer.insert(' ', 2)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
+  end
+
+  def test6
+    @buffer.delete(42, 45)
+    @buffer.insert('wolf', 42)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
   end
 end
 
 BufferTestCase.new.run
 ArrayBufferTestCase.new.run
+GapBufferTestCase.new.run

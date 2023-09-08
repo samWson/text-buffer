@@ -67,31 +67,119 @@ Actual:   #{actual}
   result
 end
 
-assertions = []
+class BufferTestCase
+  def initialize
+    original_text = 'The quick brown fox jumped over the lazy dog'
+    @buffer = Buffer.new(original_text)
+    @assertions = []
+  end
 
-original_text = 'The quick brown fox jumped over the lazy dog'
+  def run
+    test1
+    test2
+    test3
+    test4
+    test5
+    test6
 
-buffer = Buffer.new(original_text)
+    @assertions.each do |assertion|
+      if assertion.ok
+        puts 'Pass'
+      else
+        puts assertion.error
+      end
+    end
+  end
 
-buffer.insert(' speedy', 4)
-assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  def test1
+    @buffer.insert(' speedy', 4)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  end
 
-buffer.delete(43, 5)
-assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dog')
+  def test2
+    @buffer.delete(43, 5)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  end
 
-buffer.insert('s', 47)
-assertions << assert_equal(buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  def test3
+    @buffer.insert('s', 47)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  end
 
-buffer.delete(1, 4)
-assertions << assert_equal(buffer.text, 'speedy quick brown fox jumped over the dogs')
+  def test4
+    @buffer.delete(1, 4)
+    @assertions << assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  end
 
-buffer.insert('A', 1)
-buffer.insert(' ', 2)
-assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the dogs')
+  def test5
+    @buffer.insert('A', 1)
+    @buffer.insert(' ', 2)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
+  end
 
-buffer.delete(42, 45)
-buffer.insert('wolf', 42)
-assertions << assert_equal(buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  def test6
+    @buffer.delete(42, 45)
+    @buffer.insert('wolf', 42)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  end
+end
+
+class ArrayBufferTestCase
+  def initialize
+    original_text = 'The quick brown fox jumped over the lazy dog'
+    @buffer = ArrayBuffer.new(original_text)
+    @assertions = []
+  end
+
+  def run
+    test1
+    test2
+    test3
+    test4
+    test5
+    test6
+
+    @assertions.each do |assertion|
+      if assertion.ok
+        puts 'Pass'
+      else
+        puts assertion.error
+      end
+    end
+  end
+
+  def test1
+    @buffer.insert(' speedy', 4)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  end
+
+  def test2
+    @buffer.delete(43, 5)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  end
+
+  def test3
+    @buffer.insert('s', 47)
+    @assertions << assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  end
+
+  def test4
+    @buffer.delete(1, 4)
+    @assertions << assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  end
+
+  def test5
+    @buffer.insert('A', 1)
+    @buffer.insert(' ', 2)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
+  end
+
+  def test6
+    @buffer.delete(42, 45)
+    @buffer.insert('wolf', 42)
+    @assertions << assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  end
+end
 
 array_buffer = ArrayBuffer.new(original_text)
 
@@ -121,4 +209,5 @@ assertions.each do |assertion|
   end
 end
 
-puts 'All assertions complete'
+BufferTestCase.new.run
+ArrayBufferTestCase.new.run

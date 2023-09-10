@@ -92,13 +92,11 @@ class BufferTestCase
   end
 
   def run
-    assertions = []
-    assertions << test1
-    assertions << test2
-    assertions << test3
-    assertions << test4
-    assertions << test5
-    assertions << test6
+    tests = self.methods.grep(/^test_*/)
+
+    assertions = tests.map do |test|
+      self.public_send(test)
+    end
 
     assertions.each do |assertion|
       if assertion.ok
@@ -109,33 +107,38 @@ class BufferTestCase
     end
   end
 
-  def test1
+  # BUG: the order in which the tests are being run is the reverse in which they
+  # are written i.e. `test_6` is run first and `test_1` is run last. The tests
+  # have shared state so they are in an unexpected state at the start of each
+  # test. Try for test isolation in unit tests and have one larger end to end
+  # test.
+  def test_1
     @buffer.insert(' speedy', 4)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test2
+  def test_2
     @buffer.delete(43, 5)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
   end
 
-  def test3
+  def test_3
     @buffer.insert('s', 47)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
   end
 
-  def test4
+  def test_4
     @buffer.delete(1, 4)
     assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
   end
 
-  def test5
+  def test_5
     @buffer.insert('A', 1)
     @buffer.insert(' ', 2)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
   end
 
-  def test6
+  def test_6
     @buffer.delete(42, 45)
     @buffer.insert('wolf', 42)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
@@ -149,13 +152,11 @@ class ArrayBufferTestCase
   end
 
   def run
-    assertions = []
-    assertions << test1
-    assertions << test2
-    assertions << test3
-    assertions << test4
-    assertions << test5
-    assertions << test6
+    tests = self.methods.grep(/^test_*/)
+
+    assertions = tests.map do |test|
+      self.public_send(test)
+    end
 
     assertions.each do |assertion|
       if assertion.ok
@@ -166,33 +167,33 @@ class ArrayBufferTestCase
     end
   end
 
-  def test1
+  def test_1
     @buffer.insert(' speedy', 4)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test2
+  def test_2
     @buffer.delete(43, 5)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
   end
 
-  def test3
+  def test_3
     @buffer.insert('s', 47)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
   end
 
-  def test4
+  def test_4
     @buffer.delete(1, 4)
     assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
   end
 
-  def test5
+  def test_5
     @buffer.insert('A', 1)
     @buffer.insert(' ', 2)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
   end
 
-  def test6
+  def test_6
     @buffer.delete(42, 45)
     @buffer.insert('wolf', 42)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
@@ -206,13 +207,11 @@ class GapBufferTestCase
   end
 
   def run
-    assertions = []
-    assertions << test1
-    assertions << test2
-    assertions << test3
-    assertions << test4
-    assertions << test5
-    assertions << test6
+    tests = self.methods.grep(/^test_*/)
+
+    assertions = tests.map do |test|
+      self.public_send(test)
+    end
 
     assertions.each do |assertion|
       if assertion.ok
@@ -223,33 +222,33 @@ class GapBufferTestCase
     end
   end
 
-  def test1
+  def test_1
     @buffer.insert(' speedy', 4)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test2
+  def test_2
     @buffer.delete(43, 5)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
   end
 
-  def test3
+  def test_3
     @buffer.insert('s', 47)
     assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
   end
 
-  def test4
+  def test_4
     @buffer.delete(1, 4)
     assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
   end
 
-  def test5
+  def test_5
     @buffer.insert('A', 1)
     @buffer.insert(' ', 2)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
   end
 
-  def test6
+  def test_6
     @buffer.delete(42, 45)
     @buffer.insert('wolf', 42)
     assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')

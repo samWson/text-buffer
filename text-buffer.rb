@@ -86,11 +86,6 @@ Actual:   #{actual}
 end
 
 class BufferTestCase
-  def initialize
-    original_text = 'The quick brown fox jumped over the lazy dog'
-    @buffer = Buffer.new(original_text)
-  end
-
   def run
     tests = self.methods.grep(/^test_*/)
 
@@ -107,50 +102,38 @@ class BufferTestCase
     end
   end
 
-  # BUG: the order in which the tests are being run is the reverse in which they
-  # are written i.e. `test_6` is run first and `test_1` is run last. The tests
-  # have shared state so they are in an unexpected state at the start of each
-  # test. Try for test isolation in unit tests and have one larger end to end
-  # test.
-  def test_1
-    @buffer.insert(' speedy', 4)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  def test_word_insert_at_mid_index
+    buffer = Buffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert(' speedy', 4)
+    assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test_2
-    @buffer.delete(43, 5)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  def test_delete_at_mid_index
+    buffer = Buffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(36, 5)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the dog')
   end
 
-  def test_3
-    @buffer.insert('s', 47)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  def test_insert_character_at_end
+    buffer = Buffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('s', 45)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the lazy dogs')
   end
 
-  def test_4
-    @buffer.delete(1, 4)
-    assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  def test_delete_at_start
+    buffer = Buffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(1, 4)
+    assert_equal(buffer.text, 'quick brown fox jumped over the lazy dog')
   end
 
-  def test_5
-    @buffer.insert('A', 1)
-    @buffer.insert(' ', 2)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
-  end
-
-  def test_6
-    @buffer.delete(42, 45)
-    @buffer.insert('wolf', 42)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  def test_insert_character_at_start
+    buffer = Buffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('A', 1)
+    assert_equal(buffer.text, 'AThe quick brown fox jumped over the lazy dog')
   end
 end
 
 class ArrayBufferTestCase
-  def initialize
-    original_text = 'The quick brown fox jumped over the lazy dog'
-    @buffer = ArrayBuffer.new(original_text)
-  end
-
   def run
     tests = self.methods.grep(/^test_*/)
 
@@ -167,45 +150,38 @@ class ArrayBufferTestCase
     end
   end
 
-  def test_1
-    @buffer.insert(' speedy', 4)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  def test_word_insert_at_mid_index
+    buffer = ArrayBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert(' speedy', 4)
+    assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test_2
-    @buffer.delete(43, 5)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  def test_delete_at_mid_index
+    buffer = ArrayBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(36, 5)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the dog')
   end
 
-  def test_3
-    @buffer.insert('s', 47)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  def test_insert_character_at_end
+    buffer = ArrayBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('s', 45)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the lazy dogs')
   end
 
-  def test_4
-    @buffer.delete(1, 4)
-    assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  def test_delete_at_start
+    buffer = ArrayBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(1, 4)
+    assert_equal(buffer.text, 'quick brown fox jumped over the lazy dog')
   end
 
-  def test_5
-    @buffer.insert('A', 1)
-    @buffer.insert(' ', 2)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
-  end
-
-  def test_6
-    @buffer.delete(42, 45)
-    @buffer.insert('wolf', 42)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  def test_insert_character_at_start
+    buffer = ArrayBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('A', 1)
+    assert_equal(buffer.text, 'AThe quick brown fox jumped over the lazy dog')
   end
 end
 
 class GapBufferTestCase
-  def initialize
-    original_text = 'The quick brown fox jumped over the lazy dog'
-    @buffer = GapBuffer.new(original_text)
-  end
-
   def run
     tests = self.methods.grep(/^test_*/)
 
@@ -222,36 +198,34 @@ class GapBufferTestCase
     end
   end
 
-  def test_1
-    @buffer.insert(' speedy', 4)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
+  def test_word_insert_at_mid_index
+    buffer = GapBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert(' speedy', 4)
+    assert_equal(buffer.text, 'The speedy quick brown fox jumped over the lazy dog')
   end
 
-  def test_2
-    @buffer.delete(43, 5)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dog')
+  def test_delete_at_mid_index
+    buffer = GapBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(36, 5)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the dog')
   end
 
-  def test_3
-    @buffer.insert('s', 47)
-    assert_equal(@buffer.text, 'The speedy quick brown fox jumped over the dogs')
+  def test_insert_character_at_end
+    buffer = GapBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('s', 45)
+    assert_equal(buffer.text, 'The quick brown fox jumped over the lazy dogs')
   end
 
-  def test_4
-    @buffer.delete(1, 4)
-    assert_equal(@buffer.text, 'speedy quick brown fox jumped over the dogs')
+  def test_delete_at_start
+    buffer = GapBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.delete(1, 4)
+    assert_equal(buffer.text, 'quick brown fox jumped over the lazy dog')
   end
 
-  def test_5
-    @buffer.insert('A', 1)
-    @buffer.insert(' ', 2)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the dogs')
-  end
-
-  def test_6
-    @buffer.delete(42, 45)
-    @buffer.insert('wolf', 42)
-    assert_equal(@buffer.text, 'A speedy quick brown fox jumped over the wolf')
+  def test_insert_character_at_start
+    buffer = GapBuffer.new('The quick brown fox jumped over the lazy dog')
+    buffer.insert('A', 1)
+    assert_equal(buffer.text, 'AThe quick brown fox jumped over the lazy dog')
   end
 end
 
